@@ -52,10 +52,12 @@ const CharactersList = () => {
             <Button
               onClick={handleBeginJourney}
               size="lg"
-              className="bg-gradient-to-r from-purple-500 to-blue-500 hover:from-purple-600 hover:to-blue-600 text-white px-8 py-6 text-lg rounded-full transition-all duration-300 transform hover:scale-105"
+              className="bg-gradient-to-r from-purple-500 to-blue-500 hover:from-purple-600 hover:to-blue-600 text-white px-4 py-3 md:px-8 md:py-6 text-base md:text-lg rounded-full transition-all duration-300 transform hover:scale-105 max-w-full"
             >
-              <Crown className="mr-2 h-5 w-5" />
-              Begin Your Journey with {selectedCharacter.name}
+              <Crown className="mr-2 h-4 w-4 md:h-5 md:w-5" />
+              <span className="line-clamp-1">
+                Begin Your Journey with {selectedCharacter.name}
+              </span>
             </Button>
           </div>
         )}
