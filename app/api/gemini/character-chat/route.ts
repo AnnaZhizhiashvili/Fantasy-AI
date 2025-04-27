@@ -8,7 +8,7 @@ export async function POST(request: Request) {
     const { messages, character } = await request.json();
 
     // Create a system prompt that instructs Gemini to roleplay as the character
-    const systemPrompt = `You are roleplaying as ${character.name}, ${character.title}. ${character.description}
+    const systemPrompt = `You are roleplaying as ${character.name}. ${character.description}
     
     Personality traits:
     - Stay in character at all times

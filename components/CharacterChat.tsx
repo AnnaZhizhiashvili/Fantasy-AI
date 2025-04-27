@@ -17,7 +17,7 @@ export default function CharacterChat() {
   useEffect(() => {
     // Add initial greeting message from character
     if (character) {
-      const greeting = `*${character.name} appears before you*\n\nGreetings, traveler! I am ${character.name}, ${character.title}. ${character.description} How may I assist you on your journey today?`;
+      const greeting = `*${character.name} appears before you*\n\nGreetings, traveler! I am ${character.name}. ${character.description} How may I assist you on your journey today?`;
       setMessages([{ role: "assistant", content: greeting }]);
     }
   }, [character]);
