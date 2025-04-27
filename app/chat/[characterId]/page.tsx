@@ -30,7 +30,6 @@ export default function CharacterChat() {
     e.preventDefault();
     if (!input.trim() || loading) return;
 
-    // Add user message
     const userMessage = { role: "user", content: input };
     setMessages((prev) => [...prev, userMessage]);
     setInput("");
