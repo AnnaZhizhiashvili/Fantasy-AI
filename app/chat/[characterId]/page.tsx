@@ -1,11 +1,14 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { useParams } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import { characters } from "@/types/characters";
+import { ArrowLeft, User } from "lucide-react";
+import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 
 export default function CharacterChat() {
   const params = useParams();
+  const router = useRouter();
   const characterId = params.characterId as string;
   const [messages, setMessages] = useState<{ role: string; content: string }[]>(
     []
@@ -67,34 +70,90 @@ export default function CharacterChat() {
     }
   };
 
+  const handleBack = () => {
+    router.push("/");
+  };
+
   if (!character)
     return <div className="p-8 text-center">Character not found</div>;
 
   return (
     <div className="min-h-screen bg-[#1A1F2C] text-white p-4 flex flex-col">
-      <header className="mb-4 text-center">
-        <h1 className="text-3xl font-bold bg-gradient-to-r from-purple-400 to-blue-500 text-transparent bg-clip-text">
-          Conversation with {character.name}
-        </h1>
-        <p className="text-gray-400">{character.name}</p>
+      <header className="mb-4 flex items-center justify-between">
+        <button
+          onClick={handleBack}
+          className="flex items-center text-gray-300 hover:text-white transition-colors"
+        >
+          <ArrowLeft className="w-5 h-5 mr-1" />
+          <span>Back</span>
+        </button>
+
+        <div className="text-center">
+          <h1 className="text-3xl font-bold bg-gradient-to-r from-purple-400 to-blue-500 text-transparent bg-clip-text">
+            Conversation with {character.name}
+          </h1>
+          <p className="text-gray-400">{character.name}</p>
+        </div>
+
+        <div className="w-20"></div>
       </header>
 
       <div className="flex-grow overflow-auto mb-4 p-4 rounded-lg bg-[#252A37]">
         {messages.map((msg, i) => (
           <div
             key={i}
-            className={`mb-4 ${
-              msg.role === "user" ? "text-blue-300" : "text-purple-300"
+            className={`mb-4 flex items-start ${
+              msg.role === "user" ? "justify-end" : "justify-start"
             }`}
           >
-            <div className="font-bold mb-1">
-              {msg.role === "user" ? "You" : character.name}:
+            {msg.role !== "user" && (
+              <Avatar className="h-10 w-10 mr-3 flex-shrink-0">
+                <AvatarImage
+                  src={character.imageUrl}
+                  alt={character.name}
+                  className="object-cover object-top"
+                />
+                <AvatarFallback>{character.name[0]}</AvatarFallback>
+              </Avatar>
+            )}
+
+            <div
+              className={`max-w-[80%] rounded-lg p-3 ${
+                msg.role === "user"
+                  ? "bg-blue-800 text-white"
+                  : "bg-[#4B2E83] text-white"
+              }`}
+            >
+              <div className="font-bold mb-1">
+                {msg.role === "user" ? "You" : character.name}
+              </div>
+              <div className="whitespace-pre-wrap">{msg.content}</div>
             </div>
-            <div className="whitespace-pre-wrap">{msg.content}</div>
+
+            {msg.role === "user" && (
+              <Avatar className="h-10 w-10 ml-3 flex-shrink-0">
+                <AvatarFallback className="bg-blue-700">
+                  <User className="h-6 w-6" />
+                </AvatarFallback>
+              </Avatar>
+            )}
           </div>
         ))}
+
         {loading && (
-          <div className="text-gray-400">*{character.name} is thinking...*</div>
+          <div className="flex items-start">
+            <Avatar className="h-10 w-10 mr-3">
+              <AvatarImage
+                src={`/avatars/${character.id}.png`}
+                alt={character.name}
+                className="object-cover object-top"
+              />
+              <AvatarFallback>{character.name[0]}</AvatarFallback>
+            </Avatar>
+            <div className="text-gray-400">
+              *{character.name} is thinking...*
+            </div>
+          </div>
         )}
       </div>
 
